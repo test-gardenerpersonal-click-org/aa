@@ -1,0 +1,36 @@
+name: Test Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-runner:
+    name: Run on Self-Hosted Runner
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Print Runner Information
+        run: |
+          echo "Running on $(hostname)"
+          echo "Runner Labels: $RUNNER_LABELS"
+          echo "Operating System: $RUNNER_OS"
+
+      - name: List Files in Repository
+        run: ls -la
+
+      - name: Verify Python Installation
+        run: |
+          python --version || echo "Python not installed"
+      
+      - name: Environment Variables
+        run: |
+          echo "Listing all environment variables:"
+          printenv
+
+      - name: Cleanup
+        run: echo "Workflow completed successfully!"
